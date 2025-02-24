@@ -84,6 +84,7 @@
         <div id="chatbox" class="chat-container">
             <input class="chat-input" id="playerInput" placeholder="Type your response..." />
             <button class="submit-btn" onclick="sendMessage()">Submit</button>
+            <p id="chat-response"></p>
         </div>
     </div>
 
@@ -92,6 +93,8 @@
             var narrative = document.getElementById('narrative');
             var choices = document.getElementById('choices');
             var chatbox = document.getElementById('chatbox');
+            var chatResponse = document.getElementById('chat-response');
+            chatResponse.innerHTML = ""; // Clear previous response
 
             if (location === 'library') {
                 narrative.innerHTML = "You arrive at the Mystic Library. A wizard asks: 'What knowledge do you seek?'";
@@ -107,6 +110,7 @@
 
         function sendMessage() {
             var input = document.getElementById('playerInput').value;
+            var chatResponse = document.getElementById('chat-response');
             if (input.trim() === '') return;
             
             fetch('https://api.openai.com/v1/completions', {
@@ -123,11 +127,13 @@
             })
             .then(response => response.json())
             .then(data => {
-                var responseText = data.choices[0].text;
-                document.getElementById('narrative').innerHTML += `<p>${responseText}</p>`;
+                chatResponse.innerHTML = `<strong>NPC:</strong> ${data.choices[0].text.trim()}`;
                 document.getElementById('playerInput').value = ""; 
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                chatResponse.innerHTML = "<strong>NPC:</strong> I am unable to communicate at this moment. Try again later.";
+            });
         }
     </script>
 </body>
