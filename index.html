@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .narrative {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .choice-btn {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .choice-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Interactive Adventure</h1>
+        <div id="narrative" class="narrative">
+            Welcome to the interactive adventure! <br><br>
+            You find yourself in an ancient library. Dusty tomes and mysterious artifacts surround you.<br>
+            A soft light emanates from a closed door in the distance.
+        </div>
+        <div id="choices">
+            <button class="choice-btn" onclick="choose(1)">Open the door</button>
+            <button class="choice-btn" onclick="choose(2)">Examine the tomes</button>
+        </div>
+    </div>
+
+    <script>
+        function choose(option) {
+            var narrative = document.getElementById('narrative');
+            var choices = document.getElementById('choices');
+
+            if (option === 1) {
+                narrative.innerHTML = "You approach the door and push it open. The light intensifies, revealing a pathway that leads into a magical forest filled with glowing flora.";
+                choices.innerHTML = '<button class="choice-btn" onclick="choose(3)">Enter the forest</button>' +
+                                    '<button class="choice-btn" onclick="choose(4)">Retreat back into the library</button>';
+            } else if (option === 2) {
+                narrative.innerHTML = "You inspect the ancient tomes. Their brittle pages are filled with cryptic writings and illustrations. One tome glows faintly as if inviting you to read it.";
+                choices.innerHTML = '<button class="choice-btn" onclick="choose(5)">Open the glowing tome</button>' +
+                                    '<button class="choice-btn" onclick="choose(6)">Return to the center</button>';
+            } else if (option === 3) {
+                narrative.innerHTML = "With courage, you step into the forest. The air is crisp and filled with the scent of pine and mystery. Every step brings you closer to the unknown.";
+                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
+            } else if (option === 4) {
+                narrative.innerHTML = "You decide to retreat back into the library. The comfort of the familiar surrounds you, but the mystery of the door lingers in your thoughts.";
+                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
+            } else if (option === 5) {
+                narrative.innerHTML = "You open the glowing tome. A cascade of ancient words and images fills your mind, transporting you to realms beyond your wildest dreams.";
+                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
+            } else if (option === 6) {
+                narrative.innerHTML = "You return to the center of the library. The mysteries remain, inviting you to explore further when you’re ready.";
+                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
+            }
+        }
+
+        function restart() {
+            var narrative = document.getElementById('narrative');
+            var choices = document.getElementById('choices');
+            narrative.innerHTML = "Welcome to the interactive adventure! <br><br> You find yourself in an ancient library. Dusty tomes and mysterious artifacts surround you.<br> A soft light emanates from a closed door in the distance.";
+            choices.innerHTML = '<button class="choice-btn" onclick="choose(1)">Open the door</button>' +
+                                '<button class="choice-btn" onclick="choose(2)">Examine the tomes</button>';
+        }
+    </script>
+
+</body>
+</html>
