@@ -4,59 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Adventure</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?fantasy,forest') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding-top: 50px;
         }
         .container {
             width: 90%;
             max-width: 600px;
+            background: rgba(0, 0, 0, 0.8);
             padding: 20px;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            text-align: center;
-        }
-        .narrative {
-            font-size: 18px;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+            animation: fadeIn 1s;
         }
         .choice-btn {
             display: block;
             width: 100%;
-            margin: 5px 0;
-            padding: 10px;
-            background-color: #007BFF;
-            color: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            background: #ffcc00;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: 0.3s;
         }
         .choice-btn:hover {
-            background-color: #0056b3;
+            background: #ff9900;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Interactive Adventure</h1>
-        <div id="narrative" class="narrative">
-            Welcome to the interactive adventure! <br><br>
-            You find yourself in an ancient library. Dusty tomes and mysterious artifacts surround you.<br>
-            A soft light emanates from a closed door in the distance.
-        </div>
+        <h1>🌟 Interactive Adventure 🌟</h1>
+        <p id="narrative">You find yourself in a mystical forest with a glowing portal ahead and an ancient book on a stone pedestal.</p>
         <div id="choices">
-            <button class="choice-btn" onclick="choose(1)">Open the door</button>
-            <button class="choice-btn" onclick="choose(2)">Examine the tomes</button>
+            <button class="choice-btn" onclick="choose(1)">Enter the Glowing Portal</button>
+            <button class="choice-btn" onclick="choose(2)">Read the Ancient Book</button>
         </div>
     </div>
 
@@ -64,38 +61,38 @@
         function choose(option) {
             var narrative = document.getElementById('narrative');
             var choices = document.getElementById('choices');
-
+            
             if (option === 1) {
-                narrative.innerHTML = "You approach the door and push it open. The light intensifies, revealing a pathway that leads into a magical forest filled with glowing flora.";
-                choices.innerHTML = '<button class="choice-btn" onclick="choose(3)">Enter the forest</button>' +
-                                    '<button class="choice-btn" onclick="choose(4)">Retreat back into the library</button>';
+                narrative.innerHTML = "You step through the portal and find yourself in a castle floating in the sky. A mysterious voice echoes, asking if you seek wisdom or power.";
+                choices.innerHTML = '<button class="choice-btn" onclick="choose(3)">Seek Wisdom</button>' +
+                                    '<button class="choice-btn" onclick="choose(4)">Seek Power</button>';
             } else if (option === 2) {
-                narrative.innerHTML = "You inspect the ancient tomes. Their brittle pages are filled with cryptic writings and illustrations. One tome glows faintly as if inviting you to read it.";
-                choices.innerHTML = '<button class="choice-btn" onclick="choose(5)">Open the glowing tome</button>' +
-                                    '<button class="choice-btn" onclick="choose(6)">Return to the center</button>';
+                narrative.innerHTML = "The book whispers secrets of an ancient spell. Do you cast the spell or search for its true meaning?";
+                choices.innerHTML = '<button class="choice-btn" onclick="choose(5)">Cast the Spell</button>' +
+                                    '<button class="choice-btn" onclick="choose(6)">Decode the Spell</button>';
             } else if (option === 3) {
-                narrative.innerHTML = "With courage, you step into the forest. The air is crisp and filled with the scent of pine and mystery. Every step brings you closer to the unknown.";
+                narrative.innerHTML = "A wise old sage appears and gifts you the ability to see the truth behind illusions. You become a legendary hero known as the Seer.";
                 choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
             } else if (option === 4) {
-                narrative.innerHTML = "You decide to retreat back into the library. The comfort of the familiar surrounds you, but the mystery of the door lingers in your thoughts.";
+                narrative.innerHTML = "You claim an enchanted sword, but its power comes at a cost. You must forever protect the realm from shadow creatures.";
                 choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
             } else if (option === 5) {
-                narrative.innerHTML = "You open the glowing tome. A cascade of ancient words and images fills your mind, transporting you to realms beyond your wildest dreams.";
+                narrative.innerHTML = "The spell opens a rift in time, and you find yourself reliving the greatest moments of history. You become a traveler of time itself.";
                 choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
             } else if (option === 6) {
-                narrative.innerHTML = "You return to the center of the library. The mysteries remain, inviting you to explore further when you’re ready.";
+                narrative.innerHTML = "You uncover the true meaning of the spell—it is a portal to the heart of creation. You become an architect of entire worlds.";
                 choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
             }
+            anime({ targets: '.container', scale: [1, 1.05, 1], duration: 500, easing: 'easeInOutQuad' });
         }
 
         function restart() {
             var narrative = document.getElementById('narrative');
             var choices = document.getElementById('choices');
-            narrative.innerHTML = "Welcome to the interactive adventure! <br><br> You find yourself in an ancient library. Dusty tomes and mysterious artifacts surround you.<br> A soft light emanates from a closed door in the distance.";
-            choices.innerHTML = '<button class="choice-btn" onclick="choose(1)">Open the door</button>' +
-                                '<button class="choice-btn" onclick="choose(2)">Examine the tomes</button>';
+            narrative.innerHTML = "You find yourself in a mystical forest with a glowing portal ahead and an ancient book on a stone pedestal.";
+            choices.innerHTML = '<button class="choice-btn" onclick="choose(1)">Enter the Glowing Portal</button>' +
+                                '<button class="choice-btn" onclick="choose(2)">Read the Ancient Book</button>';
         }
     </script>
-
 </body>
 </html>
