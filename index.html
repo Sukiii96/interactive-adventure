@@ -37,18 +37,33 @@
             border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
-            opacity: 0;
         }
         .choice-btn:hover, .map-btn:hover {
             background: #ff9900;
         }
-        .chat-input {
+        .chat-container {
             margin-top: 20px;
+            display: none;
+        }
+        .chat-input {
             padding: 10px;
-            width: 80%;
+            width: 70%;
             border-radius: 5px;
             border: none;
             font-size: 16px;
+        }
+        .submit-btn {
+            padding: 10px 15px;
+            margin-left: 10px;
+            background: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background: #218838;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -66,9 +81,9 @@
             <button class="map-btn" onclick="travelTo('forest')">🌲 The Whispering Woods</button>
         </div>
         <div id="choices"></div>
-        <div id="chatbox" style="display: none;">
+        <div id="chatbox" class="chat-container">
             <input class="chat-input" id="playerInput" placeholder="Type your response..." />
-            <button class="choice-btn" onclick="sendMessage()">Send</button>
+            <button class="submit-btn" onclick="sendMessage()">Submit</button>
         </div>
     </div>
 
@@ -110,6 +125,7 @@
             .then(data => {
                 var responseText = data.choices[0].text;
                 document.getElementById('narrative').innerHTML += `<p>${responseText}</p>`;
+                document.getElementById('playerInput').value = ""; 
             })
             .catch(error => console.error('Error:', error));
         }
