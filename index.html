@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Adventure</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -24,7 +24,7 @@
             display: inline-block;
             animation: fadeIn 1s;
         }
-        .choice-btn {
+        .choice-btn, .map-btn {
             display: block;
             width: 100%;
             margin: 10px 0;
@@ -37,9 +37,18 @@
             border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
+            opacity: 0;
         }
-        .choice-btn:hover {
+        .choice-btn:hover, .map-btn:hover {
             background: #ff9900;
+        }
+        .chat-input {
+            margin-top: 20px;
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -50,48 +59,59 @@
 <body>
     <div class="container">
         <h1>🌟 Interactive Adventure 🌟</h1>
-        <p id="narrative">You find yourself in a mystical forest with a glowing portal ahead and an ancient book on a stone pedestal.</p>
-        <div id="choices">
-            <button class="choice-btn" onclick="choose(1)">Enter the Glowing Portal</button>
-            <button class="choice-btn" onclick="choose(2)">Read the Ancient Book</button>
+        <p id="narrative">You stand before a magical world. Choose your destination:</p>
+        <div id="map">
+            <button class="map-btn" onclick="travelTo('library')">📖 The Mystic Library</button>
+            <button class="map-btn" onclick="travelTo('castle')">🏰 The Castle of Time</button>
+            <button class="map-btn" onclick="travelTo('forest')">🌲 The Whispering Woods</button>
+        </div>
+        <div id="choices"></div>
+        <div id="chatbox" style="display: none;">
+            <input class="chat-input" id="playerInput" placeholder="Type your response..." />
+            <button class="choice-btn" onclick="sendMessage()">Send</button>
         </div>
     </div>
 
     <script>
-        function choose(option) {
+        function travelTo(location) {
             var narrative = document.getElementById('narrative');
             var choices = document.getElementById('choices');
-            
-            if (option === 1) {
-                narrative.innerHTML = "You step through the portal and find yourself in a castle floating in the sky. A mysterious voice echoes, asking if you seek wisdom or power.";
-                choices.innerHTML = '<button class="choice-btn" onclick="choose(3)">Seek Wisdom</button>' +
-                                    '<button class="choice-btn" onclick="choose(4)">Seek Power</button>';
-            } else if (option === 2) {
-                narrative.innerHTML = "The book whispers secrets of an ancient spell. Do you cast the spell or search for its true meaning?";
-                choices.innerHTML = '<button class="choice-btn" onclick="choose(5)">Cast the Spell</button>' +
-                                    '<button class="choice-btn" onclick="choose(6)">Decode the Spell</button>';
-            } else if (option === 3) {
-                narrative.innerHTML = "A wise old sage appears and gifts you the ability to see the truth behind illusions. You become a legendary hero known as the Seer.";
-                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
-            } else if (option === 4) {
-                narrative.innerHTML = "You claim an enchanted sword, but its power comes at a cost. You must forever protect the realm from shadow creatures.";
-                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
-            } else if (option === 5) {
-                narrative.innerHTML = "The spell opens a rift in time, and you find yourself reliving the greatest moments of history. You become a traveler of time itself.";
-                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
-            } else if (option === 6) {
-                narrative.innerHTML = "You uncover the true meaning of the spell—it is a portal to the heart of creation. You become an architect of entire worlds.";
-                choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
+            var chatbox = document.getElementById('chatbox');
+
+            if (location === 'library') {
+                narrative.innerHTML = "You arrive at the Mystic Library. A wizard asks: 'What knowledge do you seek?'";
+                chatbox.style.display = 'block';
+            } else if (location === 'castle') {
+                narrative.innerHTML = "The Castle of Time looms before you. A guardian asks: 'Do you seek to change the past or see the future?'";
+                chatbox.style.display = 'block';
+            } else if (location === 'forest') {
+                narrative.innerHTML = "The trees whisper in hushed tones. A spirit asks: 'What do you wish to know?'";
+                chatbox.style.display = 'block';
             }
-            anime({ targets: '.container', scale: [1, 1.05, 1], duration: 500, easing: 'easeInOutQuad' });
         }
 
-        function restart() {
-            var narrative = document.getElementById('narrative');
-            var choices = document.getElementById('choices');
-            narrative.innerHTML = "You find yourself in a mystical forest with a glowing portal ahead and an ancient book on a stone pedestal.";
-            choices.innerHTML = '<button class="choice-btn" onclick="choose(1)">Enter the Glowing Portal</button>' +
-                                '<button class="choice-btn" onclick="choose(2)">Read the Ancient Book</button>';
+        function sendMessage() {
+            var input = document.getElementById('playerInput').value;
+            if (input.trim() === '') return;
+            
+            fetch('https://api.openai.com/v1/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer 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'
+                },
+                body: JSON.stringify({
+                    model: 'text-davinci-003',
+                    prompt: `A player asks: "${input}". Respond as a wise and mystical being in a fantasy world.`,
+                    max_tokens: 50
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var responseText = data.choices[0].text;
+                document.getElementById('narrative').innerHTML += `<p>${responseText}</p>`;
+            })
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </body>
