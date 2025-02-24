@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Adventure</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -37,6 +37,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
+            opacity: 0;
         }
         .choice-btn:hover {
             background: #ff9900;
@@ -44,6 +45,12 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 600px) {
+            .choice-btn {
+                font-size: 16px;
+                padding: 12px;
+            }
         }
     </style>
 </head>
@@ -83,15 +90,26 @@
                 narrative.innerHTML = "You uncover the true meaning of the spell—it is a portal to the heart of creation. You become an architect of entire worlds.";
                 choices.innerHTML = '<button class="choice-btn" onclick="restart()">Restart Adventure</button>';
             }
-            anime({ targets: '.container', scale: [1, 1.05, 1], duration: 500, easing: 'easeInOutQuad' });
+
+            anime({ 
+                targets: '.container', 
+                scale: [1, 1.05, 1], 
+                duration: 500, 
+                easing: 'easeInOutQuad' 
+            });
+
+            setTimeout(() => {
+                anime({
+                    targets: '.choice-btn',
+                    opacity: [0, 1],
+                    duration: 600,
+                    easing: 'easeInOutQuad'
+                });
+            }, 200);
         }
 
         function restart() {
-            var narrative = document.getElementById('narrative');
-            var choices = document.getElementById('choices');
-            narrative.innerHTML = "You find yourself in a mystical forest with a glowing portal ahead and an ancient book on a stone pedestal.";
-            choices.innerHTML = '<button class="choice-btn" onclick="choose(1)">Enter the Glowing Portal</button>' +
-                                '<button class="choice-btn" onclick="choose(2)">Read the Ancient Book</button>';
+            location.reload();
         }
     </script>
 </body>
